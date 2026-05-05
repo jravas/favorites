@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { getTopArtists, getTopTracks, getAudioFeatures } from '../lib/spotify'
+import { getTopArtists, getTopTracks } from '../lib/spotify'
 
 const cache = {}
 
@@ -26,29 +26,10 @@ export function useTopData(timeRange) {
       cache[timeRange] = result
       setData(result)
       setLoading(false)
-    })
+    }).catch(() => setLoading(false))
   }, [timeRange])
 
   return { ...(data || {}), loading }
-}
-
-export function useAudioFeatures(tracks) {
-  const [features, setFeatures] = useState(null)
-  const [loading, setLoading] = useState(false)
-  const key = tracks?.map(t => t.id).join(',')
-
-  useEffect(() => {
-    if (!tracks?.length) return
-    setLoading(true)
-    setFeatures(null)
-    const ids = tracks.map(t => t.id).slice(0, 100)
-    getAudioFeatures(ids).then(res => {
-      setFeatures(res?.audio_features?.filter(Boolean) || [])
-      setLoading(false)
-    })
-  }, [key])
-
-  return { features, loading }
 }
 
 function extractGenres(artists) {
