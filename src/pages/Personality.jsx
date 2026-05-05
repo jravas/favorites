@@ -108,9 +108,10 @@ export default function Personality() {
 }
 
 function computeStats(tracks) {
-  const avgPopularity = Math.round(
-    tracks.reduce((s, t) => s + t.popularity, 0) / tracks.length
-  )
+  const withPop = tracks.filter(t => t.popularity != null)
+  const avgPopularity = withPop.length
+    ? Math.round(withPop.reduce((s, t) => s + t.popularity, 0) / withPop.length)
+    : 0
 
   const avgDurationMs = tracks.reduce((s, t) => s + t.duration_ms, 0) / tracks.length
   const avgDuration = formatMs(avgDurationMs)

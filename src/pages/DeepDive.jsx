@@ -14,8 +14,9 @@ export default function DeepDive() {
   const [range, setRange] = useState('medium_term')
   const { artists, tracks, genres, loading } = useTopData(range)
 
-  const avgPopularity = artists?.length
-    ? Math.round(artists.reduce((s, a) => s + a.popularity, 0) / artists.length)
+  const withPopularity = artists?.filter(a => a.popularity != null) || []
+  const avgPopularity = withPopularity.length
+    ? Math.round(withPopularity.reduce((s, a) => s + a.popularity, 0) / withPopularity.length)
     : 0
 
   const popularityBuckets = artists ? buildPopularityBuckets(artists) : []

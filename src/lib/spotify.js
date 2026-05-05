@@ -19,5 +19,5 @@ export const getTopArtists = (range, limit = 50) =>
   request(`/me/top/artists?time_range=${range}&limit=${limit}`)
 export const getTopTracks = (range, limit = 50) =>
   request(`/me/top/tracks?time_range=${range}&limit=${limit}`)
-export const getAudioFeatures = (ids) =>
-  request(`/audio-features?ids=${ids.join(',')}`)
+export const getArtistDetails = (ids) =>
+  request(`/artists?ids=${ids.slice(0, 50).join(',')}`)
