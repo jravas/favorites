@@ -2,6 +2,9 @@ import { useEffect, useState } from 'react'
 import { HashRouter, Routes, Route, Navigate } from 'react-router-dom'
 import { exchangeCode, hasToken, logout } from './lib/auth'
 import { getMe } from './lib/spotify'
+import { mockUser } from './lib/mockData'
+
+const MOCK = import.meta.env.VITE_MOCK === 'true'
 import Sidebar from './components/Sidebar'
 import Login from './pages/Login'
 import Overview from './pages/Overview'
@@ -17,6 +20,13 @@ export default function App() {
     let active = true
 
     async function init() {
+      if (MOCK) {
+        setUser(mockUser)
+        setAuthed(true)
+        setChecking(false)
+        return
+      }
+
       const params = new URLSearchParams(window.location.search)
       const code = params.get('code')
 
